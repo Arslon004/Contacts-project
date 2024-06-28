@@ -1,0 +1,2 @@
+const CONTACTS="CONTACTS";
+export {CONTACTS}

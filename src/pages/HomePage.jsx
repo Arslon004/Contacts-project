@@ -6,12 +6,13 @@ import { ContactHeader } from '../components/header/ContactHeader'
 import { ContactFooter } from '../components/footer/ContactFooter'
 import Categories from '../components/categories/Categories'
 import { toast } from 'react-toastify';
+import { CONTACTS, TODOS } from '../constants';
 
 
 
 export class HomePage extends Component {
   state = {
-    contacts: [
+    contacts:JSON.parse(localStorage.getItem(CONTACTS)) || [
       {
         id: "1",
         firstname: "Ibrohim",
@@ -45,9 +46,11 @@ export class HomePage extends Component {
     },
     validated: false,
     selected: null,
+    search:"",
+    importance:'all',
   }
   render() {
-    const { contacts, validated, contact, selected } = this.state;
+    const { contacts, validated, contact, selected ,search,importance} = this.state;
 
 
     let submit = (e) => {
@@ -69,6 +72,7 @@ export class HomePage extends Component {
           newContacts = contacts.map((item => item.id === selected ? ({ ...item, ...contact }) : item));
           toast.success("Updated successfully!");
         }
+        localStorage.setItem(CONTACTS,JSON.stringify(newContacts));
         this.setState({
           contacts: newContacts,
           contact: { firstname: "", lastname: "", phone: "", importance: "family" },
@@ -80,11 +84,11 @@ export class HomePage extends Component {
       }
 
     let handleSearch = (e) => {
-      console.log(e.target.value);
+      this.setState({search:e.target.value.trim().toLowerCase()});
     }
 
     let handleImportance = (e) => {
-      console.log(e.target.value);
+      this.setState({importance:e.target.value})
     }
 
     const handleContactValue = (e) => {
@@ -94,15 +98,45 @@ export class HomePage extends Component {
     const editContact = (id) => {
       const contact = contacts.find((contact) => contact.id === id);
       this.setState({ contact, selected: id });
-      toast.success("");
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
+
+    const deleteContact=(id)=>{
+      let confirmDelete=window.confirm("Delete this contact ?");
+      if(confirmDelete){
+        let newContacts= contacts.filter((contact)=>contact.id !==id )
+       this.setState({ contacts:newContacts });
+       localStorage.setItem(CONTACTS,JSON.stringify(newContacts));
+       toast.success("Deleted successfully");
+      }
+    }
+    const favoriteContact=(id)=>{
+      let confirmFavorite=window.confirm("Favorite this contact?");
+      if(confirmFavorite){
+        const newContacts=contacts.map((contact)=>contact.id === id ? ({...contact , isFavorite:true}) : contact )
+        this.setState({contacts:newContacts})
+        localStorage.setItem(CONTACTS,JSON.stringify(newContacts));
+        toast.success("This contact has been added to favorites");
+      }
+    }
+
+    const unFavoriteContact=(id)=>{
+      let confirmUnfovorite=window.confirm("Unfavorite this contact?")
+      if(confirmUnfovorite){
+        const newContacts=contacts.map((contact)=>contact.id === id ? ({...contact , isFavorite:false}) : contact )
+        this.setState({contacts:newContacts})
+
+        localStorage.setItem(CONTACTS,JSON.stringify(newContacts));
+        toast.success("This contact has been removed from favorites");
+      }
+    }
+
     return (
       <Container>
         <h2 className='text-center py-3'>Contact project</h2>
         <ContactForm selected={selected} handleContactValue={handleContactValue} contact={contact} submit={submit} validated={validated} />
-        <ContactHeader handleSearch={handleSearch} handleImportance={handleImportance} />
-        <Categories editContact={editContact} contacts={contacts} />
+        <ContactHeader  handleSearch={handleSearch}  handleImportance={handleImportance} />
+        <Categories unFavoriteContact={unFavoriteContact} favoriteContact={favoriteContact} deleteContact={deleteContact} importance={importance} search={search} editContact={editContact} contacts={contacts} />
         <ContactFooter />
       </Container>
 

@@ -3,7 +3,7 @@ import { Alert, Button } from 'react-bootstrap'
 
 export class ContactCard extends Component {
   render() {
-    const {firstname,lastname,importance,isFavorite,id,editContact}=this.props;
+    const {firstname,lastname,importance,isFavorite,id,editContact,deleteContact,favoriteContact,unFavoriteContact}=this.props;
 
     return (
       <Alert variant='success' className=' d-flex justify-content-between align-items-center'>
@@ -16,11 +16,11 @@ export class ContactCard extends Component {
 
           {
           isFavorite ?
-          <Button onClick={()=>editContact(id)}  className='me-3' variant='success'>Favorite</Button>
+          <Button onClick={()=>unFavoriteContact(id)}  className='me-3' variant='success'>Favorite</Button>
            :
-            <Button onClick={()=>editContact(id)} className='me-3' variant='dark'>Favorite</Button>
+            <Button onClick={()=>favoriteContact(id)} className='me-3' variant='dark'>Favorite</Button>
           }
-          <Button variant='danger'>Delete</Button>
+          <Button onClick={()=>deleteContact(id)} variant='danger'>Delete</Button>
 
         </div>
       </Alert>
