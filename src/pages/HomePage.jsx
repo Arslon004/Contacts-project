@@ -48,9 +48,10 @@ export class HomePage extends Component {
     selected: null,
     search:"",
     importance:'all',
+    category:'sort',
   }
   render() {
-    const { contacts, validated, contact, selected ,search,importance} = this.state;
+    const { contacts, validated, contact, selected ,search,importance,category} = this.state;
 
 
     let submit = (e) => {
@@ -119,7 +120,9 @@ export class HomePage extends Component {
         toast.success("This contact has been added to favorites");
       }
     }
-
+    const handleCategory=(e)=>{
+      this.setState({category:e.target.value});
+    }
     const unFavoriteContact=(id)=>{
       let confirmUnfovorite=window.confirm("Unfavorite this contact?")
       if(confirmUnfovorite){
@@ -135,8 +138,8 @@ export class HomePage extends Component {
       <Container>
         <h2 className='text-center py-3'>Contact project</h2>
         <ContactForm selected={selected} handleContactValue={handleContactValue} contact={contact} submit={submit} validated={validated} />
-        <ContactHeader  handleSearch={handleSearch}  handleImportance={handleImportance} />
-        <Categories unFavoriteContact={unFavoriteContact} favoriteContact={favoriteContact} deleteContact={deleteContact} importance={importance} search={search} editContact={editContact} contacts={contacts} />
+        <ContactHeader handleCategory={handleCategory} handleSearch={handleSearch}  handleImportance={handleImportance} />
+        <Categories unFavoriteContact={unFavoriteContact} favoriteContact={favoriteContact} deleteContact={deleteContact} category={category} importance={importance} search={search} editContact={editContact} contacts={contacts} />
         <ContactFooter />
       </Container>
 

@@ -4,7 +4,7 @@ import { Form, InputGroup } from 'react-bootstrap'
 export class ContactHeader extends Component {
 
   render() {
-    let {contacts, handleSearch ,handleImportance,search} = this.props;
+    let {contacts, handleSearch ,handleImportance,search,handleCategory} = this.props;
 
     return (
       <InputGroup className="mb-4">
@@ -13,13 +13,19 @@ export class ContactHeader extends Component {
           placeholder="Searching"
         />
         <InputGroup.Text >
-          <Form.Select onChange={handleImportance}>
+         <Form.Select onChange={handleImportance}>
           <option value="all">All</option>
             <option value="family">My family</option>
             <option value="friends">My friends</option>
             <option value="relative">My relative</option>
             <option value="other">My other person</option>
             <option value="a-z">A-Z</option>
+          </Form.Select>
+
+          <Form.Select onChange={handleCategory}>
+          <option value="sort">Sort by</option>
+            <option value="a-z">A-Z</option>
+            <option value="z-a">Z-A</option>
           </Form.Select>
         </InputGroup.Text>
       </InputGroup>
