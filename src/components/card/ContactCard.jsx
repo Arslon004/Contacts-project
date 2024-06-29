@@ -3,14 +3,15 @@ import { Alert, Button } from 'react-bootstrap'
 
 export class ContactCard extends Component {
   render() {
-    const {firstname,lastname,importance,isFavorite,id,editContact,deleteContact,favoriteContact,unFavoriteContact}=this.props;
+    const {firstname,lastname,importance,isFavorite,id,editContact,deleteContact,favoriteContact,unFavoriteContact,phone}=this.props;
 
     return (
       <Alert variant='success' className=' d-flex justify-content-between align-items-center'>
         <div>
           <h5 className='text-danger'>{firstname} {lastname}</h5>
-          <p className='text-success'>  My {importance} {importance === 'other' ? 'person' : ''}</p>
+          <p className='text-success'>  My {importance} {importance === 'other' ? 'person' : ''} <span className='text-primary'>{phone}</span></p>
         </div>
+
         <div>
           <Button onClick={()=>editContact(id)} className='me-3'>Edit</Button>
 
